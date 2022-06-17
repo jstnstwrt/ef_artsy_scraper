@@ -148,38 +148,38 @@ class ArtistCV(scrapy.Spider):
 		d = json.loads(response.text)
 		page_data = d['data']['artist']['showsConnection']
 
-		# testing
-		# yield page_data
+		#testing
+		yield page_data
 
-		shows = page_data['edges']
+		# shows = page_data['edges']
 
-		for show in shows:
+		# for show in shows:
 
-			show_dict = show['node']
-			partner_dict = show_dict.pop('partner')
+		# 	show_dict = show['node']
+		# 	partner_dict = show_dict.pop('partner')
 
-			show_dict = self.prefix_dict(show_dict,'show')
-			partner_dict = self.prefix_dict(partner_dict,'partner')
+		# 	show_dict = self.prefix_dict(show_dict,'show')
+		# 	partner_dict = self.prefix_dict(partner_dict,'partner')
 
-			full_dict = {**show_dict,**partner_dict}
+		# 	full_dict = {**show_dict,**partner_dict}
 
-			full_dict['artist_slug'] = artist_slug
-			full_dict['show_type'] = show_type
+		# 	full_dict['artist_slug'] = artist_slug
+		# 	full_dict['show_type'] = show_type
 
-			yield full_dict
+		# 	yield full_dict
 
-		# 	# Check to see if there are more results to grab
-		# 	has_next_page = page_data['pageInfo']['hasNextPage']
+			# Check to see if there are more results to grab
+		has_next_page = page_data['pageInfo']['hasNextPage']
 
-		# 	if has_next_page:
-				
-		# 		cursor = page_data['pageInfo']['endCursor']
-				
-		# 		yield self.api_builder(
-		# 			artist_slug=artist_slug,
-		# 			show_type=show_type,
-		# 			cursor = cursor
-		# 		)
+		if has_next_page:
+			
+			cursor = page_data['pageInfo']['endCursor']
+			
+			yield self.api_builder(
+				artist_slug=artist_slug,
+				show_type=show_type,
+				cursor = cursor
+			)
 
 
 
