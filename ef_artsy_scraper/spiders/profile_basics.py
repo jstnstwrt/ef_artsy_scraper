@@ -60,8 +60,8 @@ class ProfileBasics(scrapy.Spider):
 
 		# connect to aws s3
 
-		AWS_ACCESS_KEY_ID = scrapy.settings['AWS_ACCESS_KEY_ID']
-		AWS_SECRET_ACCESS_KEY = scrapy.settings['AWS_SECRET_ACCESS_KEY']
+		AWS_ACCESS_KEY_ID = self.settings['AWS_ACCESS_KEY_ID']
+		AWS_SECRET_ACCESS_KEY = self.settings['AWS_SECRET_ACCESS_KEY']
 
 		s3 = boto3.client(
 		    's3',
