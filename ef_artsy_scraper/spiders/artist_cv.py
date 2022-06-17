@@ -117,10 +117,9 @@ class ArtistCV(scrapy.Spider):
 		s3_file_contents = s3.get_object(Bucket=bucket, Key=latest_fp) 
 		df = pd.read_csv(s3_file_contents['Body'])
 
-		# extract list of artist slugs.
-		artist_slugs = df.artist_slug.tolist()
+		artist_list = list(df.artist_slug.values)
 
-		for artist_slug in artist_slugs[:5]:
+		for artist_slug in artist_list[:5]:
 
 			for show_type in self.show_type_configs.keys():
 
