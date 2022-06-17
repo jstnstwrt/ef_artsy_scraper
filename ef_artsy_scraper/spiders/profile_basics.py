@@ -58,7 +58,7 @@ class ProfileBasics(scrapy.Spider):
 
 	def start_requests(self):
 
-		connect to aws s3
+		# connect to aws s3
 		load_dotenv()
 
 		AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
