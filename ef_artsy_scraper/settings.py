@@ -6,9 +6,8 @@
 # dotenv_path = join(dirname(__file__), '.env')
 # load_dotenv(dotenv_path)
 
-# AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
-# AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 
 # Main Scrapy Configs
 BOT_NAME = 'artsy'
