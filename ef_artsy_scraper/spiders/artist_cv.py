@@ -150,9 +150,6 @@ class ArtistCV(scrapy.Spider):
 		d = json.loads(response.text)
 		page_data = d['data']['artist']['showsConnection']
 
-		#testing
-		# yield page_data
-
 		shows = page_data['edges']
 
 		for show in shows:
@@ -171,17 +168,17 @@ class ArtistCV(scrapy.Spider):
 			yield full_dict
 
 			# Check to see if there are more results to grab
-		has_next_page = page_data['pageInfo']['hasNextPage']
+			has_next_page = page_data['pageInfo']['hasNextPage']
 
-		if has_next_page:
-			
-			cursor = page_data['pageInfo']['endCursor']
-			
-			yield self.api_builder(
-				artist_slug=artist_slug,
-				show_type=show_type,
-				cursor = cursor
-			)
+			if has_next_page:
+				
+				cursor = page_data['pageInfo']['endCursor']
+				
+				yield self.api_builder(
+					artist_slug=artist_slug,
+					show_type=show_type,
+					cursor = cursor
+				)
 
 
 
