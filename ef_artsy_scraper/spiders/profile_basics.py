@@ -64,6 +64,9 @@ class ProfileBasics(scrapy.Spider):
 		AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 		AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
+		print(AWS_ACCESS_KEY_ID)
+		print(AWS_SECRET_ACCESS_KEY)
+
 		s3 = boto3.client(
 		    's3',
 		    aws_access_key_id=AWS_ACCESS_KEY_ID, 
