@@ -58,7 +58,7 @@ class ArtistCatalog(scrapy.Spider):
 
 	def start_requests(self):
 
-		for letter in string.ascii_lowercase[:1]:
+		for letter in string.ascii_lowercase:
 			print(f'letter: {letter}')
 
 			yield self.api_builder(letter)
