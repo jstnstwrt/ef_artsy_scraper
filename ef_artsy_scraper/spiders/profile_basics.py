@@ -5,7 +5,6 @@ import json
 import pandas as pd
 
 # for accessing files on AWS S3
-# from dotenv import load_dotenv
 import os
 import boto3
 
@@ -89,7 +88,7 @@ class ProfileBasics(scrapy.Spider):
 
 		artist_list = list(df.artist_slug.values)
 
-		for artist_slug in artist_list[:5]:
+		for artist_slug in artist_list:
 
 			yield self.api_builder(artist_slug)
 
