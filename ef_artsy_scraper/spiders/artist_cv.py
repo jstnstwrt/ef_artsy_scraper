@@ -90,36 +90,34 @@ class ArtistCV(scrapy.Spider):
 
 		# connect to aws s3
 
-		# AWS_ACCESS_KEY_ID = self.settings['AWS_ACCESS_KEY_ID']
-		# AWS_SECRET_ACCESS_KEY = self.settings['AWS_SECRET_ACCESS_KEY']
+		AWS_ACCESS_KEY_ID = self.settings['AWS_ACCESS_KEY_ID']
+		AWS_SECRET_ACCESS_KEY = self.settings['AWS_SECRET_ACCESS_KEY']
 
-		# s3 = boto3.client(
-		#     's3',
-		#     aws_access_key_id=AWS_ACCESS_KEY_ID,
-		#     aws_secret_access_key=AWS_SECRET_ACCESS_KEY
-		# )
+		s3 = boto3.client(
+		    's3',
+		    aws_access_key_id=AWS_ACCESS_KEY_ID,
+		    aws_secret_access_key=AWS_SECRET_ACCESS_KEY
+		)
 
-		# bucket = 'euclidsfund-data-pipeline'
-		# prefix = 'data_acquisition/artsy/artist_catalog/preprocessed/'
+		bucket = 'euclidsfund-data-pipeline'
+		prefix = 'data_acquisition/artsy/artist_catalog/preprocessed/'
 
-		# # identify the latest export of preprocessed artist slugs
-		# list_of_files = []
-		# results = s3.list_objects_v2(Bucket=bucket, Prefix=prefix, Delimiter='/')
-		# for obj in results['Contents']:
+		# identify the latest export of preprocessed artist slugs
+		list_of_files = []
+		results = s3.list_objects_v2(Bucket=bucket, Prefix=prefix, Delimiter='/')
+		for obj in results['Contents']:
 		    
-		#     res_key = obj['Key']
-		#     if res_key != prefix:
-		#         list_of_files.append(res_key)
+		    res_key = obj['Key']
+		    if res_key != prefix:
+		        list_of_files.append(res_key)
 		        
-		# latest_fp = list_of_files[-1]
+		latest_fp = list_of_files[-1]
 
-		# # pull down data from identified (bucket,key) pair
-		# s3_file_contents = s3.get_object(Bucket=bucket, Key=latest_fp) 
-		# df = pd.read_csv(s3_file_contents['Body'])
+		# pull down data from identified (bucket,key) pair
+		s3_file_contents = s3.get_object(Bucket=bucket, Key=latest_fp) 
+		df = pd.read_csv(s3_file_contents['Body'])
 
-		# artist_list = list(df.artist_slug.values)
-
-		artist_list = ['emma-cc-cook','emma-kohlmann','cristina-banban']
+		artist_list = list(df.artist_slug.values)
 
 		for artist_slug in artist_list:
 
