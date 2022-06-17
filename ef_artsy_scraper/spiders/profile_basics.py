@@ -5,7 +5,7 @@ import json
 import pandas as pd
 
 # for accessing files on AWS S3
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 import os
 import boto3
 
@@ -59,10 +59,10 @@ class ProfileBasics(scrapy.Spider):
 	def start_requests(self):
 
 		# connect to aws s3
-		load_dotenv()
+		# load_dotenv()
 
-		AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-		AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+		AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+		AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
 		s3 = boto3.client(
 		    's3',
