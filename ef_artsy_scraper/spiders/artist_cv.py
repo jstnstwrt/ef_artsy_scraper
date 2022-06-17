@@ -35,23 +35,6 @@ class ArtistCV(scrapy.Spider):
 
 		show_params = self.show_type_configs[show_type]
 
-		payload = json.dumps(
-			{
-				"id": "ArtistCVGroupQuery",
-				"query": "query ArtistCVGroupQuery(\n  $count: Int\n  $cursor: String\n  $slug: String!\n  $sort: ShowSorts\n  $atAFair: Boolean\n  $soloShow: Boolean\n  $isReference: Boolean\n  $visibleToPublic: Boolean\n) {\n  artist(id: $slug) {\n    ...ArtistCVGroup_artist_4A66pF\n    id\n  }\n}\n\nfragment ArtistCVGroup_artist_4A66pF on Artist {\n  slug\n  showsConnection(first: $count, after: $cursor, sort: $sort, atAFair: $atAFair, soloShow: $soloShow, isReference: $isReference, visibleToPublic: $visibleToPublic) {\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n    edges {\n      node {\n        id\n        partner {\n          __typename\n          ... on ExternalPartner {\n            name\n            id\n          }\n          ... on Partner {\n            name\n            href\n          }\n          ... on Node {\n            __isNode: __typename\n            id\n          }\n        }\n        name\n        startAt(format: \"YYYY\")\n        city\n        href\n        __typename\n      }\n      cursor\n    }\n  }\n}\n",
-				"variables": {
-					"count": 1000,
-					"cursor": cursor,
-					"slug": artist_slug,
-					"sort": "START_AT_DESC",
-					"atAFair": show_params['atAFair'],
-					"soloShow": show_params['soloShow'],
-					"isReference": True,
-					"visibleToPublic": False
-				}
-			}
-		)
-
 		headers = {
 			'authority': 'metaphysics-production.artsy.net',
 			'accept': '*/*',
@@ -70,6 +53,23 @@ class ArtistCV(scrapy.Spider):
 			'x-timezone': 'America/New_York',
 			'x-user-id': '619595f29bb476000b743ee4'
 		}
+
+		payload = json.dumps(
+			{
+				"id": "ArtistCVGroupQuery",
+				"query": "query ArtistCVGroupQuery(\n  $count: Int\n  $cursor: String\n  $slug: String!\n  $sort: ShowSorts\n  $atAFair: Boolean\n  $soloShow: Boolean\n  $isReference: Boolean\n  $visibleToPublic: Boolean\n) {\n  artist(id: $slug) {\n    ...ArtistCVGroup_artist_4A66pF\n    id\n  }\n}\n\nfragment ArtistCVGroup_artist_4A66pF on Artist {\n  slug\n  showsConnection(first: $count, after: $cursor, sort: $sort, atAFair: $atAFair, soloShow: $soloShow, isReference: $isReference, visibleToPublic: $visibleToPublic) {\n    pageInfo {\n      hasNextPage\n      endCursor\n    }\n    edges {\n      node {\n        id\n        partner {\n          __typename\n          ... on ExternalPartner {\n            name\n            id\n          }\n          ... on Partner {\n            name\n            href\n          }\n          ... on Node {\n            __isNode: __typename\n            id\n          }\n        }\n        name\n        startAt(format: \"YYYY\")\n        city\n        href\n        __typename\n      }\n      cursor\n    }\n  }\n}\n",
+				"variables": {
+					"count": 1000,
+					"cursor": cursor,
+					"slug": artist_slug,
+					"sort": "START_AT_DESC",
+					"atAFair": show_params['atAFair'],
+					"soloShow": show_params['soloShow'],
+					"isReference": True,
+					"visibleToPublic": False
+				}
+			}
+		)
 
 		request = scrapy.Request(
 			url=api_endpoint,
@@ -148,35 +148,38 @@ class ArtistCV(scrapy.Spider):
 		d = json.loads(response.text)
 		page_data = d['data']['artist']['showsConnection']
 
-		shows = page_data['edges']
+		# testing
+		yield page_data
 
-		for show in shows:
+		# shows = page_data['edges']
 
-			show_dict = show['node']
-			partner_dict = show_dict.pop('partner')
+		# for show in shows:
 
-			show_dict = self.prefix_dict(show_dict,'show')
-			partner_dict = self.prefix_dict(partner_dict,'partner')
+		# 	show_dict = show['node']
+		# 	partner_dict = show_dict.pop('partner')
 
-			full_dict = {**show_dict,**partner_dict}
+		# 	show_dict = self.prefix_dict(show_dict,'show')
+		# 	partner_dict = self.prefix_dict(partner_dict,'partner')
 
-			full_dict['artist_slug'] = artist_slug
-			full_dict['show_type'] = show_type
+		# 	full_dict = {**show_dict,**partner_dict}
 
-			yield full_dict
+		# 	full_dict['artist_slug'] = artist_slug
+		# 	full_dict['show_type'] = show_type
 
-			# Check to see if there are more results to grab
-			has_next_page = page_data['pageInfo']['hasNextPage']
+		# 	yield full_dict
 
-			if has_next_page:
+		# 	# Check to see if there are more results to grab
+		# 	has_next_page = page_data['pageInfo']['hasNextPage']
+
+		# 	if has_next_page:
 				
-				cursor = page_data['pageInfo']['endCursor']
+		# 		cursor = page_data['pageInfo']['endCursor']
 				
-				yield self.api_builder(
-					artist_slug=artist_slug,
-					show_type=show_type,
-					cursor = cursor
-				)
+		# 		yield self.api_builder(
+		# 			artist_slug=artist_slug,
+		# 			show_type=show_type,
+		# 			cursor = cursor
+		# 		)
 
 
 
