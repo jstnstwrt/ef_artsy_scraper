@@ -1,6 +1,6 @@
-import os
-from os.path import join, dirname
-from dotenv import load_dotenv
+# import os
+# from os.path import join, dirname
+# from dotenv import load_dotenv
 
 
 # Main Scrapy Configs
